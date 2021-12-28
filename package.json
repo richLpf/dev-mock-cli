@@ -1,6 +1,6 @@
 {
   "name": "u-admin-cli",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "a react-cli and create react app",
   "main": "index.js",
   "bin": {
