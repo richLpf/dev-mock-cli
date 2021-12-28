@@ -1,11 +1,8 @@
 # u-admin-cli
 
-项目描述：
-
 该cli项目为个人项目，主要是将工作中，不同的项目模板进行归类，方便下次开发直接使用，当然需要不定期更新。
 
-
-## 一、本地开发
+### 一、本地开发
 
 ```
 cd u-admin-cli
@@ -13,52 +10,17 @@ yarn install
 yarn dev [command]
 ```
 
-## 二、项目能力
-
+### 二、项目能力
 
 实现功能：
 
-- 下载基于react、antd、axios的后台管理系统模型
-- 启动一个微服务
-- 生成模拟接口
-- 生成博客
+- 1、拉取中台产品项目模版
+- 2、启动一个微服务
+- 3、生成项目组件
+- 4、生成模拟接口
+- 5、生成博客
 
-**1、拉取中台产品项目模版**
-
-目前准备的模板有：
-
-准备可以下载的模板有：
-
-【p0】基于react的项目模板
-
-一、react 后台管理系统（常用组件展示）
-技术栈：react 16、 react hooks、 antd>4.0、  node>10
-
-github地址：https://github.com/richLpf/react-admin.git
-
-二、react 后台管理系统
-ucloud公司内部项目开发，主要基于公司ui框架，权限管理等相关内容
-
-gitlab地址：https://git.ucloudadmin.com/uxiao/u-front-template
-
-三、react 移动端项目基建，基于企业微信的模板
-
-四、react 项目，umi项目构建的聊天工具类项目
-
-五、react 移动版本项目基建
-
-六、react ui库实现
-
-**2、启动一个微服务**
-
-**3、生成项目组件**
-
-**4、生成模拟接口**
-
-**5、生成博客**
-
-
-## 快速开始
+### 三、快速开始
 
 ```
 npm i -g u-admin-cli
@@ -68,14 +30,15 @@ app-cli create <myapp>
 ```
 将自动在对应目录下新建项目myapp
 
-## 版本更新
+### 四、版本更新
 
 - 1.0.0 测试版本
 - 1.0.1 提供下载create-react-app最基础的版本
 
-## 目录结构
+### 五、目录结构
 
-## 发布版本
+施工中...
+### 六、发布版本
 
 > 登录npm
 
@@ -96,7 +59,7 @@ npm run publish:patch
 npm unpublish u-admin-cli@1.0.2
 ```
 
-## 说明
+### 七、说明
 
 当前项目下载的react模板，提供的功能将会不断完善
 
