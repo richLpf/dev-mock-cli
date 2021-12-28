@@ -23,8 +23,16 @@ program
 	.command('create <app-name>')
 	.description('Create a project with template already created.')
 	.action((name, cmd)=>{
+    // console.log("cmd", cmd)
 		require('../lib/create')(name)
 	})
+
+program
+  .command('project list')
+  .description('Get template project list')
+  .action((name, cmd) => {
+    
+  })
 
 // output help information on unknown commands
 program
@@ -36,6 +44,7 @@ program
     suggestCommands(cmd)
   })
 
+// cli command
 program.on('--help', () => {
 	console.log(`  Run ${chalk.cyan('app-cli <command> --help')} for detailed usage of given command.`)
 })
