@@ -23,7 +23,7 @@ yarn dev [command]
 ### 三、快速开始
 
 ```
-npm i -g u-admin-cli
+sudo npm i -g u-admin-cli
 
 app-cli create <myapp>
 
