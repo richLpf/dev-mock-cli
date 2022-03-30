@@ -1,69 +1,91 @@
 #!/usr/bin/env node
 
-const chalk = require('chalk')
-const program = require('commander')
-const version = require('../package.json').version
-const didYouMean = require('didyoumean')
+const chalk = require("chalk");
+const program = require("commander");
+const version = require("../package.json").version;
+const didYouMean = require("didyoumean");
 
-function checkNodeVersion (wanted, id) {
+const dev = require('../lib/command/dev')
+
+function checkNodeVersion(wanted, id) {
   if (!semver.satisfies(process.version, wanted)) {
-    console.log(chalk.red(
-      'You are using Node ' + process.version + ', but this version of ' + id +
-      ' requires Node ' + wanted + '.\nPlease upgrade your Node version.'
-    ))
-    process.exit(1)
+    console.log(
+      chalk.red(
+        "You are using Node " +
+          process.version +
+          ", but this version of " +
+          id +
+          " requires Node " +
+          wanted +
+          ".\nPlease upgrade your Node version."
+      )
+    );
+    process.exit(1);
   }
 }
 
-program
-	.version(version)
-	.usage('<comman>[options]')
+program.version(version).usage("<comman>[options]");
 
 program
-	.command('create <app-name>')
-	.description('Create a project with template already created.')
-	.action((name, cmd)=>{
-    // console.log("cmd", cmd)
-		require('../lib/create')(name)
-	})
-
-program
-  .command('project list')
-  .description('Get template project list')
+  .command("create <app-name>")
+  .description("Create a project with template already created.")
   .action((name, cmd) => {
-    
+    console.log("cmd", name, cmd);
+    require("../lib/command/create")(name);
+  });
+
+program.command("dev")
+  .description("dev project")
+  .option('-p, --projects [name...]', 'Which project to use', '')
+  .option('-P, --port <port>', 'which port to run', 3000)
+  .action((argv) => {
+    console.log('Start to run dev of project', argv);
+    dev({
+      ...argv,
+      env: 'pre'
+    })
   })
+
+program
+  .command("project list")
+  .description("Get template project list")
+  .action((name, cmd) => {
+    console.log("name", name);
+    console.log("cmd", cmd);
+  });
 
 // output help information on unknown commands
-program
-  .arguments('<command>')
-  .action((cmd) => {
-    program.outputHelp()
-    console.log('  ' + chalk.red(`Unknown command ${chalk.yellow(cmd)}.`))
-    console.log()
-    suggestCommands(cmd)
-  })
+program.arguments("<command>").action((cmd) => {
+  program.outputHelp();
+  console.log("  " + chalk.red(`Unknown command ${chalk.yellow(cmd)}.`));
+  console.log();
+  suggestCommands(cmd);
+});
 
 // cli command
-program.on('--help', () => {
-	console.log(`  Run ${chalk.cyan('app-cli <command> --help')} for detailed usage of given command.`)
-})
+program.on("--help", () => {
+  console.log(
+    `  Run ${chalk.cyan(
+      "app-cli <command> --help"
+    )} for detailed usage of given command.`
+  );
+});
 
-program.parse(process.argv)
+program.parse(process.argv);
 //console.log("process", process.argv)
-if(!process.argv.slice(2).length){
-	program.outputHelp()
+if (!process.argv.slice(2).length) {
+  program.outputHelp();
 }
 
-function suggestCommands (cmd) {
-	console.log("cmd", cmd)
-  const availableCommands = program.commands.map(cmd => {
-    return cmd._name
-  })
+function suggestCommands(cmd) {
+  console.log("cmd", cmd);
+  const availableCommands = program.commands.map((cmd) => {
+    return cmd._name;
+  });
 
-  const suggestion = didYouMean(cmd, availableCommands)
-  console.log("suggestion", suggestion)
+  const suggestion = didYouMean(cmd, availableCommands);
+  console.log("suggestion", suggestion);
   if (suggestion) {
-    console.log('  ' + chalk.red(`Did you mean ${chalk.yellow(suggestion)}?`))
+    console.log("  " + chalk.red(`Did you mean ${chalk.yellow(suggestion)}?`));
   }
 }

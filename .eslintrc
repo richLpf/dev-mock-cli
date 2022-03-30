@@ -1,0 +1,16 @@
+{
+    "extends": ["eslint:recommended", "plugin:node/recommended"],
+    "parserOptions": {
+        "ecmaVersion": 2016,
+        "sourceType": "module",
+        "ecmaFeatures": {
+            "experimentalObjectRestSpread": true
+        }
+    },
+    "env": {
+        "node": true
+    },
+    "rules": {
+        "no-console": "off"
+    }
+}

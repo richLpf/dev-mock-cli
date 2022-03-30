@@ -8,20 +8,33 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "node ./bin/index.js",
+    "start": "node ./bin/index.js",
+    "app-cli": "node ./bin/index.js",
+    "prettier": "prettier -w .",
     "publish:patch": "npm version patch && npm publish --registry=https://registry.npmjs.org"
   },
   "author": "pengfei.lv",
   "license": "ISC",
   "dependencies": {
     "chalk": "^4.1.0",
+    "commander": "^9.1.0",
     "didyoumean": "^1.2.1",
     "download-git-repo": "^3.0.2",
+    "express": "^4.17.3",
     "fs-extra": "^9.0.1",
+    "get-port": "5.1.0",
+    "http-proxy-middleware": "^2.0.4",
     "inquirer": "^7.3.2",
+    "lodash": "^4.17.21",
     "log-symbols": "^4.0.0",
+    "open": "^8.4.0",
     "ora": "^4.0.5",
     "validate-npm-package-name": "^3.0.0",
     "yargs": "^15.4.1"
+  },
+  "devDependencies": {
+    "eslint": "^8.11.0",
+    "eslint-plugin-node": "^11.1.0",
+    "prettier": "^2.6.0"
   }
 }
