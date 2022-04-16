@@ -16,6 +16,8 @@
   "author": "pengfei.lv",
   "license": "ISC",
   "dependencies": {
+    "axios": "^0.26.1",
+    "body-parser": "^1.20.0",
     "chalk": "^4.1.0",
     "commander": "^9.1.0",
     "didyoumean": "^1.2.1",

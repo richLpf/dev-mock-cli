@@ -6,6 +6,7 @@ const version = require("../package.json").version;
 const didYouMean = require("didyoumean");
 
 const dev = require('../lib/command/dev')
+const mock = require('../lib/command/mock')
 
 function checkNodeVersion(wanted, id) {
   if (!semver.satisfies(process.version, wanted)) {
@@ -36,13 +37,23 @@ program
 
 program.command("dev")
   .description("dev project")
-  .option('-p, --projects [name...]', 'Which project to use', '')
   .option('-P, --port <port>', 'which port to run', 3000)
+  .option('-wb, withoutBrowser [boolean]', 'without open browser', false)
   .action((argv) => {
     console.log('Start to run dev of project', argv);
     dev({
       ...argv,
       env: 'pre'
+    })
+  })
+
+program.command("mock")
+  .description("mock action api")
+  .option('-P, --port <port>', 'which port to run', 9000)
+  .action((argv) => {
+    console.log('mock', argv);
+    mock({
+      ...argv
     })
   })
 
