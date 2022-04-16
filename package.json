@@ -1,6 +1,6 @@
 {
   "name": "app-cli",
-  "version": "1.0.10",
+  "version": "1.0.11",
   "description": "a react-cli and create react app",
   "main": "index.js",
   "bin": {
