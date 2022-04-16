@@ -1,5 +1,5 @@
 {
-  "name": "app-cli",
+  "name": "u-admin-cli",
   "version": "1.0.11",
   "description": "a react-cli and create react app",
   "main": "index.js",
