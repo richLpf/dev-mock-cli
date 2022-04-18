@@ -49,6 +49,7 @@ program.command("dev")
 
 program.command("mock")
   .description("mock action api")
+  .option('-t, --type <type>', "select api type").default("action").choices(['action', 'restful'])
   .option('-P, --port <port>', 'which port to run', 9000)
   .action((argv) => {
     console.log('mock', argv);
