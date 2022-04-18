@@ -25,7 +25,7 @@ yarn start [command]
 ```
 sudo npm i -g u-admin-cli
 
-app-cli create <myapp>
+u-admin-cli create <myapp>
 
 ```
 
