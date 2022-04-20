@@ -6,8 +6,8 @@ const Ora = require("ora");
 const chalk = require("chalk");
 const logSymbols = require("log-symbols");
 const validateProjectName = require("validate-npm-package-name");
-const TPL_TYPE = require("./util/enum");
-const downloadFromRemote = require("./downloadFromRemote");
+const TPL_TYPE = require("../utils/enum");
+const downloadFromRemote = require("../utils/downloadFromRemote");
 
 module.exports = async function create(projectName) {
   const cwd = process.cwd();

@@ -6,8 +6,8 @@ const { createProxyMiddleware } = require('http-proxy-middleware')
 const axios = require('axios')
 const _ = require('lodash')
 const getPort = require('get-port')
-const config = require('../config/const');
-const getProjectList = require('../util/getProjectList')
+const config = require('../const');
+const getProjectList = require('../utils/getProjectList')
 
 const { HOST_APP_ORIGIN_MAP } = config
 
