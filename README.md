@@ -1,6 +1,5 @@
 ## u-admin-cli
 
-u-admin-cli主要以下作用
 - 通过简单的命令启动一个或多个Http服务器，模拟接口为前端开发调用
 - 管理React后台模版项目
 
@@ -15,13 +14,23 @@ sudo npm i -g u-admin-cli
 u-admin-cli mock -c
 ```
 
+![Action图](https://cdn.jsdelivr.net/gh/richLpf/pictures@main/gitbook/1650464330833action9000.png)
+
+请求示例：
+
+![postman-action](https://cdn.jsdelivr.net/gh/richLpf/pictures@main/gitbook/1650464322832postman-action.png)
+
 
 **执行命令启动一个restful的http服务**
 ```
 u-admin-cli mock -c -t restful
 ```
 
+![postman-action](https://cdn.jsdelivr.net/gh/richLpf/pictures@main/gitbook/1650464316833restful-api.png)
 
+请求示例：
+
+![postman-action](https://cdn.jsdelivr.net/gh/richLpf/pictures@main/gitbook/1650464319834postman-restful.png)
 ### 二、启动一个Mock-API服务
 
 #### action 风格的api
@@ -90,3 +99,5 @@ cd u-admin-cli
 yarn install
 yarn start [command]
 ```
+
+待完善：需要增加错误判断，避免程序报错退出
