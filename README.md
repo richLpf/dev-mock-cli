@@ -5,12 +5,12 @@
 
 ### 一、快速开始
 
-```
+```bash
 sudo npm i -g u-admin-cli
 ```
 **执行命令启动一个action的http服务**
 
-```
+```bash
 u-admin-cli mock -c
 ```
 
@@ -22,7 +22,8 @@ u-admin-cli mock -c
 
 
 **执行命令启动一个restful的http服务**
-```
+
+```bash
 u-admin-cli mock -c -t restful
 ```
 
@@ -35,9 +36,9 @@ u-admin-cli mock -c -t restful
 
 #### action 风格的api
 
-在mock文件新建[Action].json文件，Action为对应api的名字，如果请求地址路径有参数，可以创建多层
+在mock文件新建`[Action].json`文件，Action为对应api的名字，如果请求地址路径有参数，可以创建多层
 
-比如一个请求url: http://localhost:9000/list, Action: "List"的api，数据为
+比如一个请求url: `http://localhost:9000/list`, Action: "List"的api，数据为
 
 ```json
 {
@@ -48,20 +49,41 @@ u-admin-cli mock -c -t restful
 ```
 在mock下新建list文件夹，并写入`List.json`, 执行命令`u-admin-cli mock`， 然后就可以请求接口了
 
+![mock](https://cdn.jsdelivr.net/gh/richLpf/pictures@main/gitbook/1650466393888data.png)
 
 还可以改动文件，再次请求接口内容也会跟着变化
 
-```
+```bash
 u-admin-cli mock -n
 ```
+### 三、功能介绍
+#### 1、mock - 启动本地开发服务
 
-### 三、发布版本
+参数 | 别名 | 类型 | 默认值 | 描述
+--- | --- | --- | --- | ---
+create | c | true | 创建mock数据
+PORT | P | number | 启动本地服务的端口号
+type | t | string | action | api类型：action、restful
 
-> 登录 npm
+#### 2、dev - 启动本地开发服务
 
+参数 | 别名 | 类型 | 默认值 | 描述
+--- | --- | --- | --- | ---
+projects | p | array | 启动的微应用名称
+PORT | P | number | 启动本地服务的端口号
+withoutOpenBrowser | wb | boolean | true | 取消自动打开浏览器
+env | e | object | | 开发自定义环境变量
+
+- 1、首先启动服务，获取启动项目的html代码
+- 2、挂载微服务的代码,子项目的port依次+1
+
+### 四、发布版本
+
+
+```bash
+# 登录 npm
 npm config set registry https://registry.npmjs.org/
 
-```
 npm login
 ```
 
@@ -76,21 +98,6 @@ npm run publish:patch
 ```
 npm unpublish u-admin-cli@1.0.2
 ```
-
-### 四、功能介绍
-
-#### 1、dev - 启动本地开发服务
-
-参数 ｜ 别名 ｜ 类型 ｜ 默认值 ｜ 描述
---- ｜ --- ｜ --- ｜ --- ｜ ---
-projects | p | array | 启动的微应用名称
-PORT | P ｜ number | 启动本地服务的端口号
-withoutOpenBrowser | wb | boolean | true | 取消自动打开浏览器
-env | e | object | | 开发自定义环境变量
-
-- 1、首先启动服务，获取启动项目的html代码
-- 2、挂载微服务的代码,子项目的port依次+1
-
 
 ### 五、本地开发
 
