@@ -18,7 +18,7 @@ u-admin-cli mock -c
 
 请求示例：
 
-![postman-action](https://cdn.jsdelivr.net/gh/richLpf/pictures@main/gitbook/1650464322832postman-action.png)
+![postman-action](https://cdn.jsdelivr.net/gh/richLpf/pictures@main/gitbook/1650466106884action-api.png)
 
 
 **执行命令启动一个restful的http服务**
@@ -30,7 +30,7 @@ u-admin-cli mock -c -t restful
 
 请求示例：
 
-![postman-action](https://cdn.jsdelivr.net/gh/richLpf/pictures@main/gitbook/1650464319834postman-restful.png)
+![postman-action](https://cdn.jsdelivr.net/gh/richLpf/pictures@main/gitbook/1650465986884api-restful.png)
 ### 二、启动一个Mock-API服务
 
 #### action 风格的api
