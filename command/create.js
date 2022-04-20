@@ -9,16 +9,12 @@ const validateProjectName = require("validate-npm-package-name");
 const TPL_TYPE = require("../utils/enum");
 const downloadFromRemote = require("../utils/downloadFromRemote");
 
-module.exports = async function create(projectName) {
+module.exports = async function create({name: projectName}) {
   const cwd = process.cwd();
-  console.log("cwd", cwd);
   const targetDir = path.resolve(cwd, projectName);
-  //console.log("targetDir", targetDir)
   const name = path.relative(cwd, projectName);
-  //console.log("name", name)
 
   const result = validateProjectName(name);
-  //console.log("result", result)
   if (!result.validForNewPackages) {
     console.error(chalk.red(`Invalid project name: "${name}"`));
     result.errors &&
@@ -46,7 +42,6 @@ module.exports = async function create(projectName) {
         ],
       },
     ]);
-    //console.log("action", action)
     if (!action) {
       return;
     } else if (action === "overwrite") {
@@ -106,8 +101,6 @@ module.exports = async function create(projectName) {
     },
   ]);
 
-  // console.log("templateType", templateType, author, description, version)
-
   const remoteUrl = TPL_TYPE[templateType];
   console.log(
     logSymbols.success,
@@ -119,8 +112,6 @@ module.exports = async function create(projectName) {
 
   spinner.start();
 
-  //console.log("remoteUrl", remoteUrl)
-  //console.log("projectName", projectName)
 
   downloadFromRemote(remoteUrl, projectName)
     .then((res) => {
@@ -145,7 +136,7 @@ module.exports = async function create(projectName) {
             "utf8",
             function (err) {
               if (err) {
-                console.error(err);
+                console.error(err.message);
               } else {
                 console.log(
                   logSymbols.success,
