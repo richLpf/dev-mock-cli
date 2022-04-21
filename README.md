@@ -47,7 +47,7 @@ u-admin-cli mock -c -t restful
 
 在项目中配置反向代理转发本地的接口
 
-```
+```js
 const { createProxyMiddleware } = require("http-proxy-middleware");
 
 const proxyConfig = [
