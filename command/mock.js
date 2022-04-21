@@ -32,7 +32,7 @@ module.exports = (args) => {
     });
 
     const filePath = path.join(process.cwd(), `./mock/`)
-    console.log("filePath", filePath)
+
     // 检查当前目录是否存在
     if(!fs.existsSync(filePath)&&type==="action"){
         if(create){

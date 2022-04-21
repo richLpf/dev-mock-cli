@@ -8,7 +8,7 @@
 ```bash
 sudo npm i -g u-admin-cli
 ```
-**执行命令启动一个action的http服务**
+**1、执行命令启动一个action的http服务**
 
 ```bash
 u-admin-cli mock -c
@@ -21,7 +21,7 @@ u-admin-cli mock -c
 ![postman-action](https://cdn.jsdelivr.net/gh/richLpf/pictures@main/gitbook/1650466106884action-api.png)
 
 
-**执行命令启动一个restful的http服务**
+**2、执行命令启动一个restful的http服务**
 
 ```bash
 u-admin-cli mock -c -t restful
@@ -32,6 +32,45 @@ u-admin-cli mock -c -t restful
 请求示例：
 
 ![postman-action](https://cdn.jsdelivr.net/gh/richLpf/pictures@main/gitbook/1650465986884api-restful.png)
+
+**3、如何在项目中使用**
+
+在package.json中添加`u-admin-cli mock`，默认API端口9000，风格为Action，如果需要更改restful请增加参数`u-admin-cli mock -t restful`
+
+```json
+"scripts": {
+    "start": "react-app-rewired start && u-admin-cli mock",
+}
+```
+
+在根目录新建`mock文件夹和对应的接口文件`
+
+在项目中配置反向代理转发本地的接口
+
+```
+const { createProxyMiddleware } = require("http-proxy-middleware");
+
+const proxyConfig = [
+  {
+    url: "/acl/*",
+    target: "http://localhost:9000",
+    changeOrigin: true,
+  }
+];
+
+module.exports = (app) => {
+  proxyConfig.forEach((item) => {
+    app.use(
+      item.url,
+      createProxyMiddleware({
+        target: item.target,
+        changeOrigin: item.changeOrigin,
+      })
+    );
+  });
+};
+```
+
 ### 二、启动一个Mock-API服务
 
 #### action 风格的api
@@ -57,7 +96,7 @@ u-admin-cli mock -c -t restful
 u-admin-cli mock -n
 ```
 ### 三、功能介绍
-#### 1、mock - 启动本地开发服务
+1、mock - 启动本地开发服务
 
 参数 | 别名 | 类型 | 默认值 | 描述
 --- | --- | --- | --- | ---
@@ -65,7 +104,7 @@ create | c | true | 创建mock数据
 PORT | P | number | 启动本地服务的端口号
 type | t | string | action | api类型：action、restful
 
-#### 2、dev - 启动本地开发服务
+2、dev - 启动本地开发服务
 
 参数 | 别名 | 类型 | 默认值 | 描述
 --- | --- | --- | --- | ---
