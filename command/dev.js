@@ -27,11 +27,14 @@ module.exports = async ({
 }) => {
 
     const app = express();
-    const custom = config || `./projects.json`
+    // 启动时传入一个环境变量，分别获取对应的路径
+    const execPath = process.cwd()
+    const configProjectsPath = `${execPath}/projects.json`
+    const microAppPath = path.join(execPath, '../')
     console.log("custom", custom)
 
-    const baseConfigFile = path.join(__dirname, custom)
-    const configProjects = require(baseConfigFile)
+    // const baseConfigFile = path.join(__dirname, custom)
+    const configProjects = require(configProjectsPath)
 
     const { subProjects, starter, port:startPort } = configProjects
     console.log("startPort", startPort)
@@ -44,7 +47,7 @@ module.exports = async ({
         // const CurrentProject = subProjects.filter(item => projects.includes(item.name))
         console.log("CurrentProject", CurrentProject)
         _.forEach(CurrentProject, item => {
-            const appPath = path.resolve(__dirname, `../../${item.name}`)
+            const appPath = path.join(microAppPath, `./${item.name}`)
             console.log("item", appPath, item)
             childProcess.exec(`yarn start`, { 
                 cwd: appPath
