@@ -31,7 +31,7 @@ module.exports = async ({
     const execPath = process.cwd()
     const configProjectsPath = `${execPath}/projects.json`
     const microAppPath = path.join(execPath, '../')
-    console.log("custom", custom)
+    console.log("custom", execPath)
 
     // const baseConfigFile = path.join(__dirname, custom)
     const configProjects = require(configProjectsPath)
