@@ -1,6 +1,50 @@
 const logSymbols = require('log-symbols');
 const mock = require('../command/mock');
 const create = require('../command/create');
+const dev = require('../command/dev');
+
+const getEnvConfig = development => {
+  return {
+      env: {
+          alias: 'e',
+          type: 'object',
+          describe: `${development ? '开发' : '构建'}的自定义环境变量`,
+          describeEN: `Env for ${development ? 'dev' : 'build'}`
+      },
+      FRONTEND_ENV: {
+          alias: ['f', 'env.FRONTEND_ENV'],
+          type: 'string',
+          default: development ? 'prod' : undefined,
+          choices: ['pre', 'pre2', 'test03', 'prod', 'runtime'],
+          describe: '选择前端的环境（文件、语言等）',
+          describeEN: 'Env of frontend'
+      },
+      BACKEND_ENV: {
+          alias: ['b', 'env.BACKEND_ENV'],
+          type: 'string',
+          default: development ? 'prod' : undefined,
+          choices: ['pre', 'pre2', 'test03', 'prod', 'runtime'],
+          describe: '选择后端的环境（API 环境）',
+          describeEN: 'Env of backend'
+      }
+  };
+};
+
+const getCleanEnv = (env, development) => {
+  const newEnv = {};
+  const envConfig = getEnvConfig(development);
+  delete envConfig.env;
+
+  for (const key in env) {
+      if (key in envConfig) {
+          newEnv[key] = env[key];
+      } else if (!(key.toLowerCase() in envConfig) && !(key.toUpperCase() in envConfig)) {
+          newEnv[key] = env[key];
+      }
+  }
+
+  return newEnv;
+};
 
 const commandOptions = [
   {
@@ -24,19 +68,47 @@ const commandOptions = [
     options: {
       projects: {
         alias: "p",
-        type: "string",
+        type: "array",
         require: true,
         describe: "启动的本地项目名称",
       },
+      front: {
+        alias: "f",
+        type: "string",
+        require: true,
+        describe: "本地环境",
+      },
+      backend: {
+        alias: "b",
+        type: "string",
+        require: true,
+        describe: "后端环境",
+      },
       port: {
-        alias: "P",
         type: "number",
         default: 3000,
         describe: "选择启动的端口号",
       },
+      withoutBrowser: {
+          alias: ["wb"],
+          type: "boolean",
+          default: false,
+          describe: "默认自动开启浏览器",
+      },
+      config: {
+        alias: "c",
+        type: "string",
+        default: "./projects.json",
+        describe: "默认项目根目录",
+      },
+      ...getEnvConfig(true)
     },
     callback: async (argv) => {
       console.log(logSymbols.success, `dev callback`);
+      dev({ 
+        ...argv,
+        env: getCleanEnv(argv.env, true)
+      })
     },
   },
   {

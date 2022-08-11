@@ -1,113 +1,74 @@
 const express = require('express');
 const path = require('path')
-const fs = require('fs')
 const open = require('open')
 const { createProxyMiddleware } = require('http-proxy-middleware')
-const axios = require('axios')
+const childProcess = require('child_process');
 const _ = require('lodash')
+const logger = require('../utils/logger')
 const getPort = require('get-port')
-const config = require('../const');
-const getProjectList = require('../utils/getProjectList')
 
-const { HOST_APP_ORIGIN_MAP } = config
-
-const proxyFileSuffixList = 'js|json|css|html|png|jpg|gif|map|ico|ttf|woff|svg';
+const proxyFileSuffixList = 'js|json|css|png|jpg|gif|map|ico|ttf|woff|svg';
 
 const getIdlePort = async defaultPort => {
     return await getPort({port: getPort.makeRange(defaultPort, defaultPort + 100)})
 }
 
+// 将webpack集成在cli中，启动cli指定端口号，然后starter选择+1的端口号启动，其他子应用依次启动+1的端口号
+// 根目录下新增文件夹.config，可以配置webpack，提取依赖
+// starter中，增加配置文件配置本地地址或远程地址，可以自启动也可以根据配置启动，cli读取，启动执行cli dev
+// 构建执行cli build
+
 module.exports = async ({
     projects,
     port,
+    withoutBrowser,
+    config,
     env,
-    withoutBrowser
 }) => {
 
-    console.log("project", projects, port, env, withoutBrowser)
-    let remoteHostAppOrigin = HOST_APP_ORIGIN_MAP[env.FRONTEND_ENV] || HOST_APP_ORIGIN_MAP['prod'],
-        hostAppOrigin = remoteHostAppOrigin
-        // localHostAppOrigin,
-        // localStarter;
-
-        console.log("remoteHostAppOrigin", hostAppOrigin)
-    let servicePort = 4000
-
     const app = express();
+    const custom = config || `./projects.json`
+    console.log("custom", custom)
 
-    const readyHandler = _.once(async () => {
-        const getRemoteHTML = async () => {
-            const res= await axios.get(hostAppOrigin);
-            // console.log("res", res)
-            return res.data;
-        }
-        // 获取远程代理，并启动反向代理
-        let html = await getRemoteHTML();
-        // 获取本地项目webpack编译好的代码，启动反向代理
-        // console.log("html", html)
-        const projectProxy = createProxyMiddleware({ target: hostAppOrigin, changeOrigin: true });
-        app.use(new RegExp(`.*\\.(${proxyFileSuffixList})$`), projectProxy);
-        app.get('*', async(req, res) => {
-            // const html = `<div>html内容</div>`
-            res.send(html)
+    const baseConfigFile = path.join(__dirname, custom)
+    const configProjects = require(baseConfigFile)
+
+    const { subProjects, starter, port:startPort } = configProjects
+    console.log("startPort", startPort)
+
+    const servicePort = startPort || port
+
+    const readyHandler = _.once(() => {
+        const CurrentProject = subProjects.filter(item => projects.includes(item.name))
+        CurrentProject.unshift(starter)
+        // const CurrentProject = subProjects.filter(item => projects.includes(item.name))
+        console.log("CurrentProject", CurrentProject)
+        _.forEach(CurrentProject, item => {
+            const appPath = path.resolve(__dirname, `../../${item.name}`)
+            console.log("item", appPath, item)
+            childProcess.exec(`yarn start`, { 
+                cwd: appPath
+            }, (error, stdout, stderr) => {
+                console.log("callback", error, stdout, stderr)
+            })
+            if(item.name!=="starter"){
+                const projectProxy = createProxyMiddleware({ target: item.url, changeOrigin: true });
+                const regExp = new RegExp(`^/${item.name}/.*\.(${proxyFileSuffixList})$`)
+                app.use(regExp, projectProxy);
+            }
         })
-        startServer();
+        const mainProjectProxy = createProxyMiddleware({ target: starter.url, changeOrigin: true });
+        app.use('*', mainProjectProxy);
+
+        startServer(servicePort);
         if(withoutBrowser){
             return
         }
         open(`http://localhost:${servicePort}`, { app: 'google chrome'})
     })
 
-    const finalProjects = getProjectList(projects, []);
-    console.log('finalProjects', finalProjects)
-
-    finalProjects.forEach(async projectOptions => {
-        const { projectPath, project } = projectOptions;
-        const projectPort = (port = await getIdlePort(port + 1))
-        console.log("projectPort", projectPath, project)
-
-    })
-
-    const runDev = ({ dev, project, parentProject, port, projectPath }) => {
-        const createProxy = _.once(({port, prefix}) => {
-            const projectOrigin = `http://localhost:${port}`;
-            const projectProxy = createProxyMiddleware({target: projectOrigin, changeOrigin: true});
-            app.use(new RegExp(`^${prefix}.*\\.(${proxyFileSuffixList})$`), projectProxy);
-        })
-
-        let dependences;
-        const dependencePath = path.join(projectPath, '.console', 'dependences.js');
-
-        if(fs.existsSync(dependencePath)){
-            try {
-                dependences = require(dependencePath)
-                console.log('dependeces', dependences)
-            }catch(err){
-                console.log("get dependes error", err.message)
-            }
-        }
-
-        dev({
-
-        })
-    }
-
-    const startServer = () =>
+    const startServer = (servicePort) =>
         app.listen(servicePort, () => console.log(`Console run dev listening on port ${servicePort}!`));
 
     readyHandler()
 }
-
-/**
- * 1、执行启动命令，获取对应参数
- * 2、获取远程项目代码
- * 2、获取要开发子项目更新依赖，在项目下执行yarn add
- *      1、启动子项目的webpack
- *          1、拉取子项目依赖
- *          2、对比版本和更新依赖
- *      2、配置反向代
- *          1、需要远程拉取的项目启动反向代理
- *          2、本地启动的项目通过关键字代理
- *      3、整体启动项目
- * 3、监听本地项目代码或配置更新，重新编译
- **/ 
