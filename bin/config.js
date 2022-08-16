@@ -72,6 +72,11 @@ const commandOptions = [
         require: true,
         describe: "启动的本地项目名称",
       },
+      excludes: {
+        alias: "ex",
+        type: "array",
+        describe: "挂载的项目，自行启动",
+      },
       front: {
         alias: "f",
         type: "string",

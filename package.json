@@ -8,7 +8,7 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "npx nodemon ./bin/index.js",
+    "start": "cross-env NODE_ENV=development npx nodemon ./bin/index.js",
     "app-cli": "node ./bin/index.js",
     "prettier": "prettier -w .",
     "publish:patch": "npm version patch && npm publish --registry=https://registry.npmjs.org"
@@ -39,6 +39,7 @@
     "eslint": "^8.11.0",
     "eslint-plugin-node": "^11.1.0",
     "nodemon": "^2.0.19",
-    "prettier": "^2.6.0"
+    "prettier": "^2.6.0",
+    "cross-env": "^7.0.3"
   }
 }

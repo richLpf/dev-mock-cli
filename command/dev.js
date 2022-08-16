@@ -22,6 +22,7 @@ module.exports = async ({
     projects,
     port,
     withoutBrowser,
+    excludes,
     config,
     env,
 }) => {
@@ -29,11 +30,14 @@ module.exports = async ({
     const app = express();
     // 启动时传入一个环境变量，分别获取对应的路径
     const execPath = process.cwd()
-    const configProjectsPath = `${execPath}/projects.json`
-    const microAppPath = path.join(execPath, '../')
-    console.log("custom", execPath)
+    let configProjectsPath = path.join(execPath, './projects.json')
+    let microAppPath = path.join(execPath, '../')
 
-    // const baseConfigFile = path.join(__dirname, custom)
+    if(process.env.NODE_ENV === "development"){
+        configProjectsPath = path.join(execPath, `../starter/projects.json`)
+        microAppPath = path.join(execPath, '../')
+    }
+
     const configProjects = require(configProjectsPath)
 
     const { subProjects, starter, port:startPort } = configProjects
@@ -48,12 +52,13 @@ module.exports = async ({
         console.log("CurrentProject", CurrentProject)
         _.forEach(CurrentProject, item => {
             const appPath = path.join(microAppPath, `./${item.name}`)
-            console.log("item", appPath, item)
-            childProcess.exec(`yarn start`, { 
-                cwd: appPath
-            }, (error, stdout, stderr) => {
-                console.log("callback", error, stdout, stderr)
-            })
+            if(!excludes.includes(item.name)){
+                childProcess.exec(`yarn start`, { 
+                    cwd: appPath
+                }, (error, stdout, stderr) => {
+                    console.log("callback", error, stdout, stderr)
+                })
+            }
             if(item.name!=="starter"){
                 const projectProxy = createProxyMiddleware({ target: item.url, changeOrigin: true });
                 const regExp = new RegExp(`^/${item.name}/.*\.(${proxyFileSuffixList})$`)
