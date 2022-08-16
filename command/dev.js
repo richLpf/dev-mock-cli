@@ -22,7 +22,7 @@ module.exports = async ({
     projects,
     port,
     withoutBrowser,
-    excludes,
+    excludes=[],
     config,
     env,
 }) => {
