@@ -4,10 +4,7 @@ const childProcess = require('child_process');
 const _ = require('lodash')
 const logger = require('../utils/logger')
 
-const proxyFileSuffixList = 'js|json|css|png|jpg|gif|map|ico|ttf|woff|svg';
-
 // 构建执行cli build
-
 module.exports = async ({
   projects,
 }) => {
@@ -23,6 +20,7 @@ module.exports = async ({
     const CurrentProject = subProjects.filter(item => projects.includes(item.name))
     CurrentProject.unshift(starter)
     console.log("CurrentProject For Build", CurrentProject)
+    logger.log('Start Building...')
 
     _.forEach(CurrentProject, item => {
       // 获取实际项目的物理路径
