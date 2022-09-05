@@ -1,0 +1,29 @@
+{
+    "starter": {
+        "name": "starter",
+        "url": "http://localhost:4000",
+        "port": 4000
+    },
+    "subProjects": [{
+        "name": "usms",
+        "url": "http://localhost:15000",
+        "port": 15000
+    },{
+        "name": "dashboard",
+        "url": "http://localhost:11000",
+        "port": 11000
+    },{
+        "name": "unvs",
+        "url": "http://localhost:12000",
+        "port": 12000
+    },{
+        "name": "uslk",
+        "url": "http://localhost:14000",
+        "port": 14000
+    },{
+        "name": "isms",
+        "url": "http://localhost:16000",
+        "port": 16000
+    }],
+    "port": 8080
+}

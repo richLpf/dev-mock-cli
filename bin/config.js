@@ -2,6 +2,7 @@ const logSymbols = require('log-symbols');
 const mock = require('../command/mock');
 const create = require('../command/create');
 const dev = require('../command/dev');
+const build = require('../command/build');
 
 const getEnvConfig = development => {
   return {
@@ -108,6 +109,27 @@ const commandOptions = [
       dev({ 
         ...argv,
         env: getCleanEnv(argv.env, true)
+      })
+    },
+  },
+  // 只在线上打包
+  {
+    command: "build",
+    descriptions: "打包一个本地服务",
+    options: {
+      projects: {
+        alias: "p",
+        type: "array",
+        require: true,
+        describe: "打包的本地项目名称",
+      },
+      ...getEnvConfig(false)
+    },
+    callback: async (argv) => {
+      console.log(logSymbols.success, `build callback`);
+      build({ 
+        ...argv,
+        env: getCleanEnv(argv.env, false)
       })
     },
   },

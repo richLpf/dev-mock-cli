@@ -16,7 +16,6 @@ const getIdlePort = async defaultPort => {
 // 将webpack集成在cli中，启动cli指定端口号，然后starter选择+1的端口号启动，其他子应用依次启动+1的端口号
 // 根目录下新增文件夹.config，可以配置webpack，提取依赖
 // starter中，增加配置文件配置本地地址或远程地址，可以自启动也可以根据配置启动，cli读取，启动执行cli dev
-// 构建执行cli build
 
 module.exports = async ({
     projects,
