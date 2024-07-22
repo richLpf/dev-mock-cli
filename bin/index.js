@@ -1,12 +1,10 @@
-#!/usr/bin/env node
-
-const yargs = require('yargs/yargs')
-const { hideBin } = require('yargs/helpers')
-const config = require('./config')
+import yargs from 'yargs/yargs';
+import { hideBin } from 'yargs/helpers';
+import { commandOptions } from './config.js';
 
 const yargsCommand = yargs(hideBin(process.argv))
 
-config.forEach(commandConfig => {
+commandOptions.forEach(commandConfig => {
   const { command, descriptions, options, callback } = commandConfig
   yargsCommand.command(
     command,

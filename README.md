@@ -1,76 +1,5 @@
 ## u-admin-cli
 
-- 通过简单的命令启动一个或多个Http服务器，模拟接口为前端开发调用
-- 管理React后台模版项目
-
-### 一、快速开始
-
-```bash
-sudo npm i -g u-admin-cli
-```
-**1、执行命令启动一个action的http服务**
-
-```bash
-u-admin-cli mock -c
-```
-
-![Action图](https://cdn.jsdelivr.net/gh/richLpf/pictures@main/gitbook/1650464330833action9000.png)
-
-请求示例：
-
-![postman-action](https://cdn.jsdelivr.net/gh/richLpf/pictures@main/gitbook/1650466106884action-api.png)
-
-
-**2、执行命令启动一个restful的http服务**
-
-```bash
-u-admin-cli mock -c -t restful
-```
-
-![postman-action](https://cdn.jsdelivr.net/gh/richLpf/pictures@main/gitbook/1650464316833restful-api.png)
-
-请求示例：
-
-![postman-action](https://cdn.jsdelivr.net/gh/richLpf/pictures@main/gitbook/1650465986884api-restful.png)
-
-**3、如何在项目中使用**
-
-在package.json中添加`u-admin-cli mock`，默认API端口9000，风格为Action，如果需要更改restful请增加参数`u-admin-cli mock -t restful`
-
-```json
-"scripts": {
-    "start": "react-app-rewired start && u-admin-cli mock",
-}
-```
-
-在根目录新建`mock文件夹和对应的接口文件`
-
-在项目中配置反向代理转发本地的接口
-
-```js
-const { createProxyMiddleware } = require("http-proxy-middleware");
-
-const proxyConfig = [
-  {
-    url: "/acl/*",
-    target: "http://localhost:9000",
-    changeOrigin: true,
-  }
-];
-
-module.exports = (app) => {
-  proxyConfig.forEach((item) => {
-    app.use(
-      item.url,
-      createProxyMiddleware({
-        target: item.target,
-        changeOrigin: item.changeOrigin,
-      })
-    );
-  });
-};
-```
-
 ### 二、启动一个Mock-API服务
 
 #### action 风格的api
@@ -147,3 +76,6 @@ yarn start [command]
 ```
 
 待完善：需要增加错误判断，避免程序报错退出
+
+## 待办
+- 通过swagger生成API
