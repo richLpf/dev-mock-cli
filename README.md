@@ -10,11 +10,12 @@
 
 ```json
 {
-    "RetCode": 0,
-    "Message": "",
-    "Data": [] 
+  "RetCode": 0,
+  "Message": "",
+  "Data": []
 }
 ```
+
 在mock下新建list文件夹，并写入`List.json`, 执行命令`u-admin-cli mock`， 然后就可以请求接口了
 
 ![mock](https://cdn.jsdelivr.net/gh/richLpf/pictures@main/gitbook/1650466393888data.png)
@@ -24,29 +25,30 @@
 ```bash
 u-admin-cli mock -n
 ```
+
 ### 三、功能介绍
+
 1、mock - 启动本地开发服务
 
-参数 | 别名 | 类型 | 默认值 | 描述
---- | --- | --- | --- | ---
-create | c | true | 创建mock数据
-PORT | P | number | 启动本地服务的端口号
-type | t | string | action | api类型：action、restful
+| 参数   | 别名 | 类型   | 默认值               | 描述                     |
+| ------ | ---- | ------ | -------------------- | ------------------------ |
+| create | c    | true   | 创建mock数据         |
+| PORT   | P    | number | 启动本地服务的端口号 |
+| type   | t    | string | action               | api类型：action、restful |
 
 2、dev - 启动本地开发服务
 
-参数 | 别名 | 类型 | 默认值 | 描述
---- | --- | --- | --- | ---
-projects | p | array | 启动的微应用名称
-PORT | P | number | 启动本地服务的端口号
-withoutOpenBrowser | wb | boolean | true | 取消自动打开浏览器
-env | e | object | | 开发自定义环境变量
+| 参数               | 别名 | 类型    | 默认值               | 描述               |
+| ------------------ | ---- | ------- | -------------------- | ------------------ |
+| projects           | p    | array   | 启动的微应用名称     |
+| PORT               | P    | number  | 启动本地服务的端口号 |
+| withoutOpenBrowser | wb   | boolean | true                 | 取消自动打开浏览器 |
+| env                | e    | object  |                      | 开发自定义环境变量 |
 
 - 1、首先启动服务，获取启动项目的html代码
 - 2、挂载微服务的代码,子项目的port依次+1
 
 ### 四、发布版本
-
 
 ```bash
 # 登录 npm
@@ -78,4 +80,5 @@ yarn start [command]
 待完善：需要增加错误判断，避免程序报错退出
 
 ## 待办
+
 - 通过swagger生成API

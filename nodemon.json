@@ -1,4 +1,4 @@
 {
-    "verbose": true,
-    "ignore": ["docs/*"]
+  "verbose": true,
+  "ignore": ["docs/*"]
 }
