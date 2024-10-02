@@ -1,6 +1,6 @@
 {
   "name": "dev-mock-cli",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "a react-cli and create react app",
   "main": "index.js",
   "type": "module",
