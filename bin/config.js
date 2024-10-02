@@ -1,4 +1,4 @@
-import mock from '../command/index.js';
+import mock from '../index.js';
 
 export const commandOptions = [
   {
@@ -8,9 +8,9 @@ export const commandOptions = [
       type: {
         alias: 't',
         type: 'string',
-        default: 'action',
+        default: 'restful',
         describe: '选择API类型',
-        choices: ['action', 'restful']
+        choices: ['restful', 'action']
       },
       port: {
         alias: 'P',
