@@ -1,4 +1,4 @@
-## u-admin-cli
+## dev-mock-cli
 
 ### 二、启动一个Mock-API服务
 
