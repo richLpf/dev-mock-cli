@@ -29,3 +29,16 @@ export const headerSetting = (req, res, next) => {
   });
   next();
 };
+
+// action中间件的转化
+export const actionTransfer = (req, res, next) => {
+  const { Action } = req.body;
+  console.log('actionTransfer', Action);
+  if (!Action) {
+    // 如果请求体中没有 Action，返回 400 错误
+    return res.status(400).send({ error: 'Action field is required' });
+  }
+  // 动态修改请求的 URL，将它转发到 /{Action} 路径
+  req.url = `/${Action}`;
+  next();
+};

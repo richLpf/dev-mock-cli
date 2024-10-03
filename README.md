@@ -1,8 +1,27 @@
 ## dev-mock-cli
+支持能力/价值：
+- Mock API
+- 读取Swagger API，并生成接口
+- 无需担心跨域问题
+- 安装和启动方便
+
+待办：
+- [待确认]支持版本：node>=14
+- 发布启动的配置信息汇总，提示产品使用文档：CLI使用说明，配置说明mock.config.json
+- 同时只能支持一个风格，当风格切换时，检测到有mock文件夹，则提示清空
+- TODO: restful: 读取swagger，生成json，处理中，晚上CLI的文档，用来测试
+- TODO: 读取配置文件，全局使用处理
+- TODO: .js默认加载
+- TODO: mock能力细节处理
+- 安装则生成mock.config.json
+- 生成单元测试
+- 录制演示视频
+- 优化打印日志，全部英文显示
 
 ### 二、启动一个Mock-API服务
 
 #### action 风格的api
+
 
 在mock文件新建`[Action].json`文件，Action为对应api的名字，如果请求地址路径有参数，可以创建多层
 
@@ -66,33 +85,13 @@ npm run publish:patch
 2、撤回 24 小时内发布的版本，撤回后 24 小时内不允许发布
 
 ```
-npm unpublish u-admin-cli@1.0.2
+npm unpublish dev-mock-cli@1.0.2
 ```
 
 ### 五、本地开发
 
 ```
-cd u-admin-cli
+cd dev-mock-cli
 yarn install
 yarn start [command]
 ```
-
-
-## 待办
-
-- 安装在项目中
-- 自动安装和启动，mock api
-- 支持restful风格API
-- 本地直接打开项目使用文档
-
-
-- 配置html页面
-- 添加默认配置
-- 读取项目中的参数
-- 优化日志
-- 通过swagger API生成mock API
-- 需要增加错误判断，避免程序报错退出
-- 单元测试
-- 使用文档
-- 若端口被占用，重新启动一个端口
-- 录制视频

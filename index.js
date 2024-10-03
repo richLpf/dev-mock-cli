@@ -2,9 +2,11 @@ import express from 'express';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import logger from './utils/logger.js';
-import { cors, timeoutSetting } from './command/middleware.js';
+import { cors, timeoutSetting, actionTransfer } from './command/middleware.js';
 import restful from './command/restful.js';
 import action from './command/action.js';
+import { ConfirmPort } from './utils/prompt.js';
+import { getIdlePort } from './utils/index.js';
 
 // 获取当前文件路径（解决 ESM 模块路径问题）
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -36,7 +38,23 @@ const startServer = (app, port, type) => {
 };
 
 // 模拟服务器
-const mock = ({ port, type }) => {
+const mock = async ({ port, type }) => {
+  // open port
+  const newPort = await getIdlePort(port);
+  let confirmPortResult = true;
+  if (port !== newPort) {
+    confirmPortResult = await ConfirmPort(port, newPort);
+    if (confirmPortResult) {
+      port = newPort;
+    } else {
+      logger.output.error(
+        `The current port is occupied and the service cannot be started. Please close the current port and try again.`,
+      );
+      process.exit(0);
+    }
+  }
+  
+  // 启动express
   const app = express();
   const filePath = path.join(process.cwd(), './mock');
 
@@ -53,6 +71,9 @@ const mock = ({ port, type }) => {
   // 通用中间件
   app.all('*', cors);
   app.all('*', timeoutSetting);
+  if (type === 'action') {
+    app.all("*", actionTransfer)
+  }
 
   // 根据类型加载相应模块
   const loadModule = type === 'action' ? action : restful;

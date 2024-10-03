@@ -1,61 +1,54 @@
 import fs from 'fs';
-import { NotFoundResponse } from './response.js';
+import { createProxyMiddleware } from 'http-proxy-middleware';
+import { ResponseExample } from './response.js';
+import { getAllAction } from '../utils/index.js';
+import { getConfig } from '../utils/config.js';
+import { generateApi, createAPIFile, fetchAndCreateRoutes } from './localAction.js';
 
-const checkFileExist = filePath => {
-  // 检查当前目录是否存在
-  if (!fs.existsSync(filePath) && type === 'action') {
-    if (create) {
-      fs.mkdir(`mock`, function (err) {
-        if (err) {
-          return console.error(err.message);
-        }
-        fs.mkdirSync(`./mock/api`);
-        const data = JSON.stringify(ResponseExample, '', '\t');
-        fs.writeFileSync('./mock/api/list.json', data);
-      });
-      console.log(
-        chalk.green(
-          `curl --location --request POST 'http://localhost:9000/api' \ --header 'Content-Type: application/json' \ --data-raw '{ "Action": "list" }'`
-        )
-      );
-    } else {
-      console.log(
-        'The current directory mock folder does not exist, you can create it use : ' + chalk.red('u-admin-cli mock -n')
-      );
-    }
+
+const action = async ({ app, filePath }) => {
+  // TODO: 配置信息需要统一处理，作为全局使用，type的每个优先级需要确认和逻辑开发
+  const { proxyApiUrl, swaggerApiJSON=[] } = await getConfig();
+  
+  // 如果 mock 文件夹不存在，自动创建它
+  if (!fs.existsSync(filePath)) {
+    createAPIFile(ResponseExample, filePath, 'ActionName.json');
   }
-};
 
-const action = ({ app, filePath }) => {
-  // 如果在mock下，判断下key的值
-  app.post('*', async (req, res) => {
-    const key = req.params[0].substring(1);
-    const { Action } = req.body;
-    if (key) {
-      const fileList = [];
-      try {
-        fs.readdirSync(filePath).forEach(fileName => {
-          fileList.push(fileName);
-        });
-      } catch (err) {
-        res.send(NotFoundResponse);
-      }
+  // 获取所有 action 名称
+  const allActions = getAllAction(filePath);
+  if (allActions.length === 0) {
+    console.warn('No actions found in the mock directory.');
+    return;
+  }
+  
+  // Step 1: 中间件来拦截请求并动态修改 URL
+  // app.use('/', (req, res, next) => {
+  //   const { Action } = req.body;
+  //   if (!Action) {
+  //     // 如果请求体中没有 Action，返回 400 错误
+  //     return res.status(400).send({ error: 'Action field is required' });
+  //   }
+  //   // 动态修改请求的 URL，将它转发到 /{Action} 路径
+  //   req.url = `/${Action}`;
+  //   next();  // 继续处理下一个中间件
+  // });
 
-      if (!fileList.includes(key) || !Action) {
-        res.send(NotFoundResponse);
-      }
-    }
-
-    const file = `${filePath}${key}/${Action}.json`; //文件路径，__dirname为当前运行js文件的目录
-
-    fs.readFile(file, 'utf-8', function (err, data) {
-      if (err) {
-        res.send(NotFoundResponse);
-      } else {
-        res.send(data);
-      }
-    });
-  });
+  // Step2: 为每个 action 注册对应的路由
+  generateApi(app, filePath, allActions);
+  
+  // Step3: 获取swagger api json的数据，注册接口
+  // 调用 fetchAndCreateRoutes 函数
+  await fetchAndCreateRoutes({app, swaggerApiJSON});
+  
+  // Step4: 获取代理配置并设置代理
+  if (proxyApiUrl) {
+    app.use('*', createProxyMiddleware({
+        target: proxyApiUrl,
+        changeOrigin: true,
+      })
+    );
+  }
 };
 
 export default action;

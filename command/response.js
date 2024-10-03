@@ -21,3 +21,17 @@ export const ResponseExample = {
     }
   ]
 };
+
+export const mockRestfulAPI = [{
+  url: "/list",
+  fileName: 'get.json',
+  content: ResponseExample
+},{
+  url: "/user/{id}",
+  fileName: 'get.json',
+  content: ResponseExample
+},{
+  url: "/user/{id}",
+  fileName: 'put.json',
+  content: ResponseExample
+}]
