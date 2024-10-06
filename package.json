@@ -3,6 +3,16 @@
   "version": "0.0.3",
   "description": "a react-cli and create react app",
   "main": "index.js",
+  "files": [
+    "bin",
+		"command",
+    "public",
+    "utils",
+		"index.js",
+    "package.json",
+		"server.js",
+		"README.md"
+	],
   "type": "module",
   "bin": {
     "dev-mock-cli": "./bin/index.js"

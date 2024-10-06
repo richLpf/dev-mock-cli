@@ -75,8 +75,8 @@ export const createRoutes = ({ app, data }) => {
   };
   
   // Step3: 获取swagger api json的数据，注册接口
-export const fetchAndCreateRoutes = async ({ app, swaggerApiJSON }) => {
-    const routePromises = swaggerApiJSON.map(async (item) => {
+export const fetchAndCreateRoutes = async ({ app, swaggerApi }) => {
+    const routePromises = swaggerApi.map(async (item) => {
       const { type, url } = item;
       if (type === 'action') {
         try {

@@ -1,10 +1,9 @@
 import { createProxyMiddleware } from 'http-proxy-middleware';
-import { getConfig } from '../utils/config.js';
 import { getAllAPIPath } from '../utils/index.js';
 import { checkFileExist, checkFileExistsAndRespond } from './localRestful.js';
 
-
-const restful = async ({ app, filePath }) => {
+const restful = async ({ app, filePath, config }) => {
+  const { proxyApiUrl } = config;
   // 如果没有文件，新建example
   checkFileExist(filePath, true)
   console.log(filePath)
@@ -15,7 +14,6 @@ const restful = async ({ app, filePath }) => {
     checkFileExistsAndRespond(url, filePath, req, res);
   });
   // 没有本地mock，则读取远程接口
-  const { proxyApiUrl } = await getConfig();
   if (proxyApiUrl) {
     const proxyMiddleware = createProxyMiddleware({
       target: proxyApiUrl,

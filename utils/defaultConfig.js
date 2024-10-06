@@ -1,5 +1,6 @@
-export const defaultConfig = {
+const defaultConfig = {
   port: 9000,
+  type: 'restful',
   timeout: 0,
   requestLimit: '50mb',
   cors: {
@@ -9,3 +10,5 @@ export const defaultConfig = {
     'Content-Type': 'application/json;charset=utf-8'
   } 
 };
+
+export default defaultConfig;

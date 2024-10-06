@@ -1,4 +1,4 @@
-import { defaultConfig } from '../utils/default.config.js';
+import defaultConfig from '../utils/defaultConfig.js';
 import { setHeader } from '../utils/index.js';
 export const cors = (req, res, next) => {
   res.header('Access-Control-Allow-Origin', '*'); //访问控制允许来源：所有
@@ -33,7 +33,6 @@ export const headerSetting = (req, res, next) => {
 // action中间件的转化
 export const actionTransfer = (req, res, next) => {
   const { Action } = req.body;
-  console.log('actionTransfer', Action);
   if (!Action) {
     // 如果请求体中没有 Action，返回 400 错误
     return res.status(400).send({ error: 'Action field is required' });
