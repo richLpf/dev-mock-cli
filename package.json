@@ -5,14 +5,14 @@
   "main": "index.js",
   "files": [
     "bin",
-		"command",
+    "command",
     "public",
     "utils",
-		"index.js",
+    "index.js",
     "package.json",
-		"server.js",
-		"README.md"
-	],
+    "server.js",
+    "README.md"
+  ],
   "type": "module",
   "bin": {
     "dev-mock-cli": "./bin/index.js"
@@ -37,6 +37,7 @@
     "mockjs": "^1.1.0",
     "open": "^8.4.0",
     "ora": "^4.0.5",
+    "swagger-parser": "^10.0.3",
     "webpack": "4",
     "webpack-cli": "4",
     "yargs": "^17.4.1"

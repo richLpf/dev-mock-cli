@@ -10,9 +10,9 @@
 - [已完成]发布启动的配置信息汇总，提示产品使用文档：CLI使用说明，配置说明mock.config.json，提示当前运行的action风格还是restful风格
 - [已完成]读取配置文件，全局使用处理，并确认默认文件的优先级：命令行 > 配置文件 > 默认配置
 - [已完成]如何remote api,网络不通，进行告警，并不再转发
-- TODO: restful: 读取swagger，生成json，处理中，晚上CLI的文档，用来测试
-  - ACL文档的返回值
-- 上传npm的时候，指定文件
+- [已完成]上传npm的时候，指定文件
+- [已完成]restful: 读取swagger，生成json，处理中，晚上CLI的文档，用来测试
+- TODO: 返回值固定匹配和规则定制
 - 生成单元测试
 - CLI使用文档
 - 录制演示视频
@@ -22,6 +22,7 @@
 - 同时只能支持一个风格，当风格切换时，检测到有mock文件夹，则提示清空
   - 当用户之前用restful风格，后面切换成了action后，在代码里面兼容，如果读取格式不对，就报错
 - TODO: .js默认加载
+- TODO: 请求参数校验、返回数据特殊处理
 - TODO: mock能力细节处理，支持不走本地的local json
 
 ### 二、启动一个Mock-API服务
@@ -101,3 +102,13 @@ cd dev-mock-cli
 yarn install
 yarn start [command]
 ```
+
+规则
+- 返回值固定匹配和规则定制
+custom.rules.js
+
+export default class 定义规则
+
+- 固定值：RetCode: 0
+- 具体字段的类型返回值: Name/UserName Id String 返回mock值
+- 数据类型返回不同的值: Number 返回mock

@@ -1,5 +1,6 @@
 import fs from 'fs/promises';
 import path from 'path';
+import axios from 'axios';
 import { fileURLToPath } from 'url';
 import logger from './logger.js';
 
@@ -25,8 +26,8 @@ export const handleFormSubmission = (req, res) => {
 };
 
 // 打印服务器启动日志
-export const logServerStart = (port, type) => {
-  const version = getVersion();
+export const logServerStart = async (port, type) => {
+  const version = await getVersion();
   const introduction = {
     welcome: `Welcome to dev-mock-cli: ${version}`,
     document: `3. For more info, check out: https://github.com/richLpf/dev-mock-cli/wiki/dev%E2%80%90mock%E2%80%90cli`,
@@ -73,10 +74,11 @@ export const fileExists = async (configPath) => {
 // Check URL accessibility
 export const checkUrlAccessibility = async (url) => {
   try {
-    const response = await fetch(url); // Use fetch or axios
+    const response = await axios.get(url); // Use fetch or axios
     return response.status >= 200 && response.status < 300;
   } catch (error) {
     logger.error(`Error accessing URL: ${url}`);
+    logger.error(error);
     return false;
   }
 };

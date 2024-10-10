@@ -1,22 +1,82 @@
 import Mock from 'mockjs';
-// 根据swagger response返回mock数据
-// 动态生成 Mock 数据的函数
+import axios from 'axios';
+import { NotFoundResponse } from './response.js';
+
+// const RuleMap = {
+//     NameRule: 'name',
+//     MailRule: 'mail',
+//     IdIntRule: 'id',
+//     TimeRule: 'time'
+// }
+
+
+// swagger生成路由
+export const createRoutes = ({ app, data, config }) => {
+    const paths = data.paths || {}
+    if(!paths){
+      return
+    }
+    const keys = Object.keys(paths);
+    const limit = Math.min(keys.length, 100); // 只生成前100个路由
+  
+    for (let i = 0; i < limit; i++) {
+      const pathKey = keys[i];
+      const pathInfo = paths[pathKey];
+      const lastSegment = `/${pathKey.split('/').pop()}`;
+      
+      Object.keys(pathInfo).forEach(method => {
+        app[method](lastSegment, async (req, res) => {
+          const { Action } = req.body;
+          if (Action) {
+            // TODO: 这里指读取了$ref字段，如果没有关联需要处理下
+            const responseSchema = pathInfo[method].responses['200'].schema['$ref'].split('/').pop();
+            const response = data.definitions[responseSchema]
+            const mockResponse = await createSwaggerMockData(data, response, config)
+            return res.status(200).json(mockResponse);
+          } else {
+            return res.status(404).send(NotFoundResponse);
+          }
+        });
+      });
+    }
+};
+  
+// 获取swagger api json的数据，注册接口
+export const fetchAndCreateRoutes = async ({ app, swaggerApi, config }) => {
+    const routePromises = swaggerApi.map(async (item) => {
+      const { type, url } = item;
+      if (type === 'action') {
+        try {
+          // TODO: 优化, 全局加载，方便后面读取直接使用
+          const response = await axios.get(url);
+          const data = response.data;
+          createRoutes({ app, data, config });
+        } catch (error) {
+          console.error('Error fetching data from URL:', url, error);
+        }
+      }
+    });
+  
+    // 等待所有的请求完成
+    await Promise.all(routePromises);
+};
 
 export const getRefModal = ({
     ref,
-    definitions
+    definitions,
+    config
 }) => {
     if(!ref) return null;
     const refKey = ref.split('/').pop();
     const responseModal = definitions[refKey];
     if (responseModal) {
-        return generateMockData(responseModal, definitions)
+        return generateMockData(responseModal, definitions, config)
     } else {
         console.warn(`Definition not found for ${refKey}`);
     }
 }
 
-export const generateMockData = (response, definitions) => {
+export const generateMockData = (response, definitions, config) => {
     const mockData = {};
     const { type, properties } = response;
     if(type === 'object'){
@@ -29,17 +89,19 @@ export const generateMockData = (response, definitions) => {
                 break;
             case 'integer':
                 // 增加固定参数返回RetCode=0
-                mockData[key] = Mock.mock('@integer(0, 1)'); // 随机整数
+                mockData[key] = ["RetCode", "ret_code"].includes(key) ? 0 : Mock.mock('@integer(1, 10)'); // 随机整数
                 break;
             case 'number':
-                mockData[key] = Mock.mock('@integer(0, 1)'); // 随机整数
+                mockData[key] = ["RetCode", "ret_code"].includes(key) ? 0 : Mock.mock('@integer(1, 10)'); // 随机整数
+                break;
+            case 'boolean':
+                mockData[key] = true; // 随机布尔值
                 break;
             case 'array':
-                mockData[key] = getRefModal({ref: property.items['$ref'], definitions}) || [];
+                mockData[key] = getRefModal({ref: property.items['$ref'], definitions, config}) || [];
                 break;
             case 'object':
-                console.log("key1111", key, property)
-                mockData[key] = generateMockData(property, definitions)
+                mockData[key] = generateMockData(property, definitions, config)
                 break;
             default:
               if(property['$ref']){
@@ -59,9 +121,19 @@ export const generateMockData = (response, definitions) => {
     return mockData;
 };
 
-export const createSwaggerMockData = async (data, response) => {
+export const createSwaggerMockData = async (data, response, config) => {
     // 生成 Mock 数据
-    const mockData = generateMockData(response, data.definitions);
+    const definitions = data?.definitions || data.components?.schemas;
+    const mockData = generateMockData(response, definitions, config);
     // 打印生成的 Mock 数据
     return mockData
 }
+
+// export const responseRule = ({rules, key}) => {
+//     if(Object.keys(rules).includes(key)){
+//         if('fixedValue' in rule[key]){
+//             // 固定值
+//             return rule[key].fixedValue
+//         }
+//     }
+// }
