@@ -5,7 +5,6 @@ import { getAllAction } from '../utils/index.js';
 import { generateApi, createAPIFile } from './localAction.js';
 import { fetchAndCreateRoutes } from './swaggerAction.js';
 
-
 const action = async ({ app, filePath, config }) => {
   // TODO: 配置信息需要统一处理，作为全局使用，type的每个优先级需要确认和逻辑开发
   const { proxyApiUrl, swaggerApi=[] } = config;

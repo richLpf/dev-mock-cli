@@ -1,6 +1,7 @@
 import path from 'path';
 import fs from 'fs';
 import Mock from 'mockjs';
+import { ResponseExample, NotFoundResponse } from './response.js';
 // import axios from 'axios';
 // import { createSwaggerMockData } from './swaggerAction.js'
 export const createAPIFile = (dataJson, folderPath, fileName) => {
