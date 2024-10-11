@@ -3,6 +3,7 @@ name: Build and Push Multi-Arch Docker Images
 on:
   push:
     branches:
+      - feature/dev
       - main  # 当代码推送到 main 分支时触发
       - dev   # 或者 dev 分支
 
