@@ -34,7 +34,7 @@ export const logServerStart = async (port, type) => {
     api: `Mock API running on port ${port}, using ${type} style.`,
     order: `1. API lookup order: local mock -> swagger -> remote API`,
     actionExample: `2. Example (Action API): curl --location --request POST 'http://localhost:${port}' --header 'Content-Type: application/json' --data-raw '{ "Action": "ActionName" }'`,
-    restfulExample: `2. Example (RESTful API): curl --location --request GET 'http://localhost:${port}/user' --header 'Content-Type: application/json'`,
+    restfulExample: `2. Example (RESTful API): curl --location --request GET 'http://localhost:${port}/list' --header 'Content-Type: application/json'`,
   };
 
   logger.tip(introduction.welcome);
