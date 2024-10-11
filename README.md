@@ -1,103 +1,52 @@
-## dev-mock-cli
-支持能力/价值：
-- Mock API
-- 读取Swagger API，并生成接口
-- 无需担心跨域问题
-- 安装和启动方便
+说明：前端的工作中，mock api是比较麻烦的事情，特别是API交付节点太晚导致前端项目延期背锅。所以构建了当前项目，用来配合前端项目快速生成mock API。
 
-待办：
-- [已完成]支持版本：node>=18
-- [已完成]发布启动的配置信息汇总，提示产品使用文档：CLI使用说明，配置说明mock.config.json，提示当前运行的action风格还是restful风格
-- [已完成]读取配置文件，全局使用处理，并确认默认文件的优先级：命令行 > 配置文件 > 默认配置
-- [已完成]如何remote api,网络不通，进行告警，并不再转发
-- TODO: restful: 读取swagger，生成json，处理中，晚上CLI的文档，用来测试
-  - ACL文档的返回值
-- 上传npm的时候，指定文件
-- 生成单元测试
-- CLI使用文档
-- 录制演示视频
-- 优化打印日志，全部英文显示
-- 配置npm可以发布的文件
-- 支持自动生成mock.config.json
-- 同时只能支持一个风格，当风格切换时，检测到有mock文件夹，则提示清空
-  - 当用户之前用restful风格，后面切换成了action后，在代码里面兼容，如果读取格式不对，就报错
-- TODO: .js默认加载
-- TODO: mock能力细节处理，支持不走本地的local json
+## 支持能力/价值：
 
-### 二、启动一个Mock-API服务
+1. Mock API
+1. 读取Swagger文档，并生成API接口
+1. 无需担心跨域问题
+1. 安装方便：node环境一行指令安装/Docker启动
+1. API生成读取顺序：本地mock -> swagger -> remote api
 
-#### action 风格的api
+## 快速开始
 
+要求node环境：node > 18，后续考虑降低成本
 
-在mock文件新建`[Action].json`文件，Action为对应api的名字，如果请求地址路径有参数，可以创建多层
+1、安装dev-mock-cli
 
-比如一个请求url: `http://localhost:9000/list`, Action: "List"的api，数据为
+```
+yarn add -D dev-mock-cli
+```
 
-```json
+2、在项目根目录下新建`mock.config.json`
+```
 {
-  "RetCode": 0,
-  "Message": "",
-  "Data": []
+    "port": "9000",
+    "type": "action",
+    "proxyApiUrl": "http://localhost:9000",
+    "cors": {
+      "allowedHeaders": ["Origin", "X-Requested-With", "Content-Type", "Accept", "X-Accesstoken"],
+      "allowCredentials": true,  
+      "maxAge": 86400
+    },
+    "swaggerApi": [
+      {
+        "title": "swagger",
+        "type": "action",
+        "url": "http://subscri.xxx.com/swagger/doc.json"
+      }
+    ],
+    "mockFields": {
+        "RetCode": {
+            "fixedValue": 0
+        }
+    }
 }
 ```
+配置说明：待补充
 
-在mock下新建list文件夹，并写入`List.json`, 执行命令`u-admin-cli mock`， 然后就可以请求接口了
-
-![mock](https://cdn.jsdelivr.net/gh/richLpf/pictures@main/gitbook/1650466393888data.png)
-
-还可以改动文件，再次请求接口内容也会跟着变化
-
-```bash
-u-admin-cli mock -n
-```
-
-### 三、功能介绍
-
-1、mock - 启动本地开发服务
-
-| 参数   | 别名 | 类型   | 默认值               | 描述                     |
-| ------ | ---- | ------ | -------------------- | ------------------------ |
-| create | c    | true   | 创建mock数据         |
-| PORT   | P    | number | 启动本地服务的端口号 |
-| type   | t    | string | action               | api类型：action、restful |
-
-2、dev - 启动本地开发服务
-
-| 参数               | 别名 | 类型    | 默认值               | 描述               |
-| ------------------ | ---- | ------- | -------------------- | ------------------ |
-| projects           | p    | array   | 启动的微应用名称     |
-| PORT               | P    | number  | 启动本地服务的端口号 |
-| withoutOpenBrowser | wb   | boolean | true                 | 取消自动打开浏览器 |
-| env                | e    | object  |                      | 开发自定义环境变量 |
-
-- 1、首先启动服务，获取启动项目的html代码
-- 2、挂载微服务的代码,子项目的port依次+1
-
-### 四、发布版本
-
-```bash
-# 登录 npm
-npm config set registry https://registry.npmjs.org/
-
-npm login
-```
-
-1、修改版本号,执行下面命令
+3、启动mock
 
 ```
-npm run publish:patch
-```
-
-2、撤回 24 小时内发布的版本，撤回后 24 小时内不允许发布
-
-```
-npm unpublish dev-mock-cli@1.0.2
-```
-
-### 五、本地开发
-
-```
-cd dev-mock-cli
-yarn install
-yarn start [command]
+yarn dev-mock-cli mock
 ```

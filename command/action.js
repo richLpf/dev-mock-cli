@@ -2,8 +2,8 @@ import fs from 'fs';
 import { createProxyMiddleware } from 'http-proxy-middleware';
 import { ResponseExample } from './response.js';
 import { getAllAction } from '../utils/index.js';
-import { generateApi, createAPIFile, fetchAndCreateRoutes } from './localAction.js';
-
+import { generateApi, createAPIFile } from './localAction.js';
+import { fetchAndCreateRoutes } from './swaggerAction.js';
 
 const action = async ({ app, filePath, config }) => {
   // TODO: 配置信息需要统一处理，作为全局使用，type的每个优先级需要确认和逻辑开发
@@ -26,7 +26,7 @@ const action = async ({ app, filePath, config }) => {
   
   // Step2: 获取swagger api json的数据，注册接口
   // 调用 fetchAndCreateRoutes 函数
-  await fetchAndCreateRoutes({app, swaggerApi});
+  await fetchAndCreateRoutes({app, swaggerApi, config});
   
   // Step3: 获取代理配置并设置代理
   if (proxyApiUrl) {

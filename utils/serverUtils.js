@@ -1,5 +1,6 @@
 import fs from 'fs/promises';
 import path from 'path';
+import axios from 'axios';
 import { fileURLToPath } from 'url';
 import logger from './logger.js';
 
@@ -25,15 +26,15 @@ export const handleFormSubmission = (req, res) => {
 };
 
 // 打印服务器启动日志
-export const logServerStart = (port, type) => {
-  const version = getVersion();
+export const logServerStart = async (port, type) => {
+  const version = await getVersion();
   const introduction = {
     welcome: `Welcome to dev-mock-cli: ${version}`,
     document: `3. For more info, check out: https://github.com/richLpf/dev-mock-cli/wiki/dev%E2%80%90mock%E2%80%90cli`,
     api: `Mock API running on port ${port}, using ${type} style.`,
     order: `1. API lookup order: local mock -> swagger -> remote API`,
     actionExample: `2. Example (Action API): curl --location --request POST 'http://localhost:${port}' --header 'Content-Type: application/json' --data-raw '{ "Action": "ActionName" }'`,
-    restfulExample: `2. Example (RESTful API): curl --location --request GET 'http://localhost:${port}/user' --header 'Content-Type: application/json'`,
+    restfulExample: `2. Example (RESTful API): curl --location --request GET 'http://localhost:${port}/list' --header 'Content-Type: application/json'`,
   };
 
   logger.tip(introduction.welcome);
@@ -73,10 +74,11 @@ export const fileExists = async (configPath) => {
 // Check URL accessibility
 export const checkUrlAccessibility = async (url) => {
   try {
-    const response = await fetch(url); // Use fetch or axios
+    const response = await axios.get(url); // Use fetch or axios
     return response.status >= 200 && response.status < 300;
   } catch (error) {
     logger.error(`Error accessing URL: ${url}`);
+    logger.error(error);
     return false;
   }
 };

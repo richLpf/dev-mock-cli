@@ -2,7 +2,6 @@ import path from 'path';
 import defaultConfig from './defaultConfig.js';
 import logger from './logger.js';
 import {
-  getDirname,
   readConfigFile,
   fileExists,
   checkUrlAccessibility,
@@ -18,7 +17,8 @@ class ConfigManager {
 
   // Get the path to the config file
   getConfigPath() {
-    return path.join(getDirname(import.meta.url), '..', this.configName); // Pointing to the root directory
+    return path.join(process.cwd(), this.configName);
+    // return path.join(getDirname(import.meta.url), '..', this.configName); // Pointing to the root directory
   }
 
    // Filter out invalid JSON URLs
