@@ -42,6 +42,5 @@ jobs:
           push: true
           tags: |
             ${{ secrets.DOCKER_USERNAME }}/dev-mock-cli:latest
-            ${{ secrets.DOCKER_USERNAME }}/dev-mock-cli:${{ github.ref_name }}
           
 
