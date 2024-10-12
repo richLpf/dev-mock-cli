@@ -12,7 +12,7 @@ export const APIFolderResponse = {
 
 export const ResponseExample = {
   Action: 'post',
-  RetCode: 200,
+  RetCode: 0,
   Message: 'success',
   'Data|1-10': [
     {
