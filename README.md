@@ -85,8 +85,6 @@ yarn add -D dev-mock-cli
 swagger文档生成后，只需要拿到当前swagger的json文件，写入配置文件即可，
 然后访问对应的路由，即可生成返回参数
 
-![image.png](https://p0-xtjj-private.juejin.cn/tos-cn-i-73owjymdk6/a7ee6f2561ef42ef82d403a588477cda~tplv-73owjymdk6-jj-mark-v1:0:0:0:0:5o6Y6YeR5oqA5pyv56S-5Yy6IEAg5YmN56uv5Lit5ZCO5Y-w:q75.awebp?policy=eyJ2bSI6MywidWlkIjoiMzk0MDI0NjAzNjk0ODg0MCJ9&rk3s=f64ab15b&x-orig-authkey=f32326d3454f2ac7e96d3d06cdbb035152127018&x-orig-expires=1729322200&x-orig-sign=y26Jvdi2lpQ2BdNR%2BP69tOEH56M%3D)
-
 ### 3、代理远程服务器API
 
 在开发项目时，除了本地和swagger模拟的api，我们一般会有远程的api服务。
