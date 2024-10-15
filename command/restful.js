@@ -10,6 +10,7 @@ const restful = async ({ app, filePath, config }) => {
   checkFileExist(filePath, true)
   const apiList = getAllAPIPath(filePath);
   // 获取本地所有的path，生成本地代理
+  // TODO: 无法匹配路由变量参数
   app.all(apiList, async (req, res) => {
     const url = req.path;
     checkFileExistsAndRespond(url, filePath, req, res);

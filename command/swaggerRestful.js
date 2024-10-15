@@ -20,6 +20,7 @@ const resolveRef = (ref, openAPIDoc) => {
 
 // 生成 Mock 值的示例函数
 const generateMockValue = (schema, openAPIDoc) => {
+    if (!schema) return null;
     if (schema.$ref) {
         // 解析 $ref 并递归处理
         const resolvedSchema = resolveRef(schema.$ref, openAPIDoc);
@@ -50,7 +51,6 @@ const generateMockValue = (schema, openAPIDoc) => {
 // 生成 Mock 数据
 const generateMockData = (api) => {
     const mockData = {};
-  
     for (const [path, methods] of Object.entries(api.paths)) {
         if (!mockData[path]) {
             mockData[path] = {}; // 为每个路径初始化一个空对象来存储不同的方法
