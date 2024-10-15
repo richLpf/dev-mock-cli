@@ -23,6 +23,10 @@ const restful = async ({ app, filePath, config }) => {
     const proxyMiddleware = createProxyMiddleware({
       target: proxyApiUrl,
       changeOrigin: true,
+      logLevel: 'debug',
+      onProxyRes(proxyRes, req, res) {
+        console.log(`[Proxy Response] Status: ${proxyRes.statusCode}, Path: ${req.path}`);
+      }
     })
     app.use('*', proxyMiddleware);
   }

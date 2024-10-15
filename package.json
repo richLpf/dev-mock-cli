@@ -19,7 +19,7 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "npx nodemon ./bin/index.js mock",
+    "start": "npx nodemon --watch ./mock --exec 'node ./bin/index.js mock'",
     "prettier": "prettier -w .",
     "publish:patch": "npm version patch && npm publish --registry=https://registry.npmjs.org"
   },
@@ -28,6 +28,7 @@
   "dependencies": {
     "axios": "^1.7.7",
     "chalk": "4.1.2",
+    "cors": "^2.8.5",
     "express": "^4.19.2",
     "get-port": "^7.1.0",
     "http-proxy-middleware": "^2.0.6",

@@ -1,7 +1,8 @@
 import express from 'express';
 import path from 'path';
+import cors from 'cors';
 
-import { cors, timeoutSetting, actionTransfer } from './command/middleware.js';
+import { timeoutSetting, actionTransfer } from './command/middleware.js';
 import restful from './command/restful.js';
 import action from './command/action.js';
 import { ConfirmPort } from './utils/prompt.js';
@@ -33,7 +34,7 @@ class MockServer {
     }
 
     const app = express();
-    app.use(express.urlencoded({ extended: true }));
+    app.use(express.urlencoded({ extended: true, limit: '50mb' }));
     app.use(express.json({ limit: '50mb' }));
     app.use(express.static(this.staticPath));
 
@@ -41,8 +42,8 @@ class MockServer {
     app.post('/submit', handleFormSubmission);
 
     // 通用中间件
-    app.all('*', cors);
-    app.all('*', timeoutSetting);
+    app.use(cors());
+    app.use('*', timeoutSetting);
     if (this.type === 'action') {
       app.all('*', actionTransfer);
     }

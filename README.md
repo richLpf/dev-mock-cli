@@ -132,3 +132,22 @@ docker run -d -p 9000:9000 -v /data/api/mock:/app/mock -v data/api/mock.config.j
 ```
 
 只需要更新mock文件夹下的json数据即可操作API
+
+## 更新记录
+
+- 20241015
+  - 监听mock目录下文件新增/删除，重启服务
+  - 增加proxy代理请求日志
+
+
+## 待办&问题
+
+- proxy代理请求超时
+- 跨域配置
+- 自动生成mock.config.json文件
+- 返回参数处理
+- 路由参数变量匹配
+- 请求参数匹配
+- 判断如果没有mock.config.json，不要报错
+- 操作视频
+- 删除配置文件中swaggerJSON中的type字段
