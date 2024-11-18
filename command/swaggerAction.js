@@ -43,9 +43,7 @@ export const createRoutes = ({ app, data, config }) => {
   
 // 获取swagger api json的数据，注册接口
 export const fetchAndCreateRoutes = async ({ app, swaggerApi, config }) => {
-    const routePromises = swaggerApi.map(async (item) => {
-      const { type, url } = item;
-      if (type === 'action') {
+    const routePromises = swaggerApi.map(async (url) => {
         try {
           // TODO: 优化, 全局加载，方便后面读取直接使用
           const response = await axios.get(url);
@@ -54,7 +52,6 @@ export const fetchAndCreateRoutes = async ({ app, swaggerApi, config }) => {
         } catch (error) {
           console.error('Error fetching data from URL:', url, error);
         }
-      }
     });
   
     // 等待所有的请求完成

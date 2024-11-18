@@ -134,16 +134,13 @@ export const createRoutes = ({ app, data }) => {
 
 // 获取swagger api json的数据，注册接口
 export const fetchAndCreateRoutes = async ({ app, swaggerApi }) => {
-    const routePromises = swaggerApi.map(async (item) => {
-      const { type, url } = item;
-      if (type === 'restful') {
+    const routePromises = swaggerApi.map(async (url) => {
         try {
           const data = await loadSwaggerDoc(url);
           createRoutes({ app, data });
         } catch (error) {
           console.error('Error fetching data from URL:', url, error);
         }
-      }
     });
   
     // 等待所有的请求完成

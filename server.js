@@ -12,7 +12,7 @@ import { logServerStart, handleFormSubmission } from './utils/serverUtils.js';
 class MockServer {
   constructor(config) {
     this.config = config;
-    this.port = config.port;
+    this.port = isNaN(config.port) ? Number(config.port) : config.port;
     this.type = config.type;
     this.staticPath = path.join(process.cwd(), 'public');
     this.filePath = path.join(process.cwd(), './mock');

@@ -30,11 +30,7 @@ yarn add -D dev-mock-cli
       "maxAge": 86400
     },
     "swaggerApi": [
-      {
-        "title": "swagger",
-        "type": "action",
-        "url": "http://subscri.xxx.com/swagger/doc.json"
-      }
+      "http://subscri.xxx.com/swagger/doc.json", "http://subscri.xxx.com/swagger/doc1.json"
     ],
     "mockFields": {
         "RetCode": {
@@ -55,13 +51,6 @@ yarn add -D dev-mock-cli
 | requestPriority | API读取的优先级，匹配到后将直接返回                                       |
 | mockFields      | 特殊字段的配置，比如swagger中code是number类型，但是在实践中我们需要配置code字段为0，代表成功 |
 
-**swaggerAPI**
-
-| 字段    | 说明                         |
-| ----- | -------------------------- |
-| title | swagger文档说明                |
-| type  | api风格，默认restful，可以选择action |
-| url   | swagger文档的json url地址       |
 
 ## API数据来源配置
 
@@ -133,21 +122,33 @@ docker run -d -p 9000:9000 -v /data/api/mock:/app/mock -v data/api/mock.config.j
 
 只需要更新mock文件夹下的json数据即可操作API
 
+## 解决问题记录
+
+- 由于mockjs中引用commander需要支持node>18,所以做兼容处理
+
+```package.json
+
+"resolutions": {
+    "mockjs/commander": "9.5.0"
+}
+
+```
+
 ## 更新记录
 
 - 20241015
   - 监听mock目录下文件新增/删除，重启服务
   - 增加proxy代理请求日志
+- 20241118
+  - 支持生成配置文件mock.config.json
+  - 支持node v16
 
 
 ## 待办&问题
 
 - proxy代理请求超时
 - 跨域配置
-- 自动生成mock.config.json文件
 - 返回参数处理
 - 路由参数变量匹配
 - 请求参数匹配
-- 判断如果没有mock.config.json，不要报错
 - 操作视频
-- 删除配置文件中swaggerJSON中的type字段

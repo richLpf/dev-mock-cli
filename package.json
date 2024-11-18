@@ -32,7 +32,6 @@
     "express": "^4.19.2",
     "get-port": "^7.1.0",
     "http-proxy-middleware": "^2.0.6",
-    "inquirer": "^11.1.0",
     "lodash": "^4.17.21",
     "mockjs": "^1.1.0",
     "open": "^8.4.0",
@@ -50,5 +49,8 @@
     "nodemon": "^2.0.19",
     "openapi-types": "^12.1.3",
     "prettier": "^3.3.3"
+  },
+  "resolutions": {
+    "mockjs/commander": "9.5.0"
   }
 }

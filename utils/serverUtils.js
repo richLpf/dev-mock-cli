@@ -3,6 +3,7 @@ import path from 'path';
 import axios from 'axios';
 import { fileURLToPath } from 'url';
 import logger from './logger.js';
+import defaultConfig from './defaultConfig.js';
 
 // Get the current module directory
 export const getDirname = (moduleUrl) => {
@@ -66,7 +67,7 @@ export const fileExists = async (configPath) => {
     await fs.access(configPath);
     return true;
   } catch (error) {
-    console.error("File does not exist:", error)
+    // console.error("File does not exist:", error.)
     return false;
   }
 };
@@ -102,3 +103,23 @@ export const validateType = (type) => {
   }
   return type; // Return valid type
 };
+
+// create mock.config.json
+export const createMockConfigJson = async (projectAddr) => {
+  console.log('Creating mock.config.json...', projectAddr);
+  try {
+    const filePath = projectAddr;
+    // 将内容转化为 JSON 字符串
+    const jsonContent = JSON.stringify(defaultConfig, null, 2);
+    // 写入文件
+    fs.writeFile(filePath, jsonContent, 'utf8', (err) => {
+      if (err) {
+        console.error('Error creating mock.config.json:', err);
+      } else {
+        console.log('mock.config.json created successfully!');
+      }
+    });
+  } catch (err){
+    console.error('Error creating mock.config.json:', err);
+  }
+}

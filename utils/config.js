@@ -6,7 +6,8 @@ import {
   fileExists,
   checkUrlAccessibility,
   validatePort,
-  validateType
+  validateType,
+  createMockConfigJson
 } from './serverUtils.js';
 
 class ConfigManager {
@@ -25,7 +26,7 @@ class ConfigManager {
    async filterInvalidJsonUrl(config) {
     if (config.swaggerApi) {
       // Create an array containing all URLs
-      const urlList = config.swaggerApi.map(item => item.url);
+      const urlList = config.swaggerApi || [];
       
       // Check the accessibility of all URLs
       const urlAccessResults = await Promise.all(urlList.map(async url => {
@@ -88,6 +89,9 @@ class ConfigManager {
       }
       // Remove inaccessible URLs from swaggerApi
       mock = await this.filterInvalidJsonUrl(mock);
+    } else {
+      // if not exist, generate new mock.config.json
+      createMockConfigJson(configPath);
     }
 
     // Initialize and normalize parameters

@@ -1,14 +1,19 @@
 const defaultConfig = {
   port: 9000,
-  type: 'restful',
-  timeout: 0,
-  requestLimit: '50mb',
+  type: "restful",
+  proxyApiUrl: "",
   cors: {
-    'Access-Control-Allow-Origin': '*',
-    'Access-Control-Allow-Headers': 'Origin, X-Requested-With, Content-Type, Accept',
-    'Access-Control-Allow-Methods': 'PUT, POST, GET, DELETE, OPTIONS',
-    'Content-Type': 'application/json;charset=utf-8'
-  } 
+    allowedHeaders: ["Origin", "X-Requested-With", "Content-Type", "Accept", "X-Accesstoken"],
+    allowCredentials: true,
+    maxAge: 86400,
+  },
+  swaggerApi: [],
+  requestPriority: ["local", "swagger", "proxy"],
+  mockFields: {
+    RetCode: {
+      fixedValue: 0,
+    }
+  }
 };
 
 export default defaultConfig;
